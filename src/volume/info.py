@@ -16,9 +16,9 @@ If ``remotehost`` is set, volume info will be retrieved from the remote host.
             "info",
             volname]
     try:
-        response = subprocess.check_output(program,stderr=subprocess.STDOUT).split("\n")
-    except subprocess.CalledProcessError,e:
-        print e.output
+        response = str(subprocess.check_output(program,stderr=subprocess.STDOUT), encoding="utf-8").split("\n")
+    except subprocess.CalledProcessError as e:
+        print(e.output)
         raise
     
 
