@@ -1,4 +1,5 @@
 import subprocess
+
 def detach(hostname,remotehost="localhost"):
     """
 Detach ``host`` from the peer group. Failure will raise DetachError or DetachWarning.
@@ -12,7 +13,7 @@ If ``remotehost`` is set, detach will be run on remote host.
                 "peer", 
                 "detach", 
                 hostname])
-    except subprocess.CalledProcessError,e:
+    except subprocess.CalledProcessError as e:
         response = e.output
         if response[-14:] == " is localhost\n":
             raise Warning(response)
