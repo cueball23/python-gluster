@@ -13,9 +13,9 @@ If ``remotehost`` is set, probe will be run on remote host.
             "probe", 
             host])
     if response == "Probe on localhost not needed":
-        raise ProbeWarning, response
+        raise ProbeWarning(response)
     if response[:13] == "Probe on host":
-        raise ProbeWarning, response
+        raise ProbeWarning(response)
     if response[:33] == "Probe returned with unknown errno":
-        raise ProbeError, response
+        raise ProbeError(response)
     return true
