@@ -1,4 +1,5 @@
-import subprocess,re
+import subprocess
+import re
 
 def status(remotehost="localhost"):
     """
@@ -18,9 +19,9 @@ def _status(remotehost="localhost",recursion=False):
             "peer", 
             "status"]
     try:
-        response = subprocess.check_output(program,stderr=subprocess.STDOUT).split("\n")
-    except subprocess.CalledProcessError,e:
-        print e.output
+        response = str(subprocess.check_output(program,stderr=subprocess.STDOUT), encoding="utf8").split("\n")
+    except subprocess.CalledProcessError as e:
+        print(e.output)
         raise
 
     # step through the output and build the dict
@@ -43,13 +44,13 @@ def _status(remotehost="localhost",recursion=False):
     # our first pass through
     if not recursion:
         remotehost = [x for x in 
-                _status(remotehost=peerstatus["host"].keys()[0],recursion=True)["host"].keys()
-                if x not in peerstatus["host"].keys()][0]
+                list(_status(remotehost=list(peerstatus["host"].keys())[0],recursion=True)["host"].keys())
+                if x not in list(peerstatus["host"].keys())][0]
         peerstatus["host"][remotehost] = {}
         peerstatus["host"][remotehost]["self"] = True
-        peerstatus["host"][remotehost]["uuid"] = _status(remotehost=peerstatus["host"].keys()[0],recursion=True)["host"][remotehost]["uuid"]
+        peerstatus["host"][remotehost]["uuid"] = _status(remotehost=list(peerstatus["host"].keys())[0],recursion=True)["host"][hostname]["uuid"]
         peerstatus["host"][remotehost]["state"] = {}
-        for host in peerstatus["host"].keys():
+        for host in list(peerstatus["host"].keys()):
             remotestatus = _status(host,recursion=True)
             for statehost in remotestatus["host"]:
                 for state in remotestatus["host"][statehost]["state"]:
